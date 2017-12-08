@@ -1,0 +1,3 @@
+# placed at ~/.ssh/config, if not exists just make it.
+Host *
+  ProxyCommand netcat -x 127.0.0.1:8080 %h %p
