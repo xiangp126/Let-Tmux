@@ -86,7 +86,10 @@ Success Now.
 ```
 
 # for git use
-for git push origin master use
+for git push use, note that: git pull uses https not ssh.
+
+only https usage need not following configuration.
+
 ``` bash
 > cd ~/.ssh
 # add config with below contents.
