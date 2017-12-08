@@ -3,18 +3,18 @@
 Guide for how to build tmux on Linux that I did not have root privilege.
 
 ``` bash
-cd ~
-mkdir usr
+> cd ~
+> mkdir usr
 
 # firstly compile libevent 
 needs libevent 2.x
 
-wget https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
-tar -zxv -f libevent-2.1.8-stable.tar.gz
-cd libevent-2.1.8-stable
-./configure --prefix=/users/penxiang/usr/
-make -j
-make install
+> wget https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
+> tar -zxv -f libevent-2.1.8-stable.tar.gz
+> cd libevent-2.1.8-stable
+> ./configure --prefix=/users/penxiang/usr/
+> make -j
+> make install
 
 ## know something about .pc file
 > pwd
@@ -42,19 +42,31 @@ Cflags: -I${includedir}
 -L/users/penxiang/usr/lib -levent -lcrypto -lrt
 
 # compile tmux
-## set PKG_CONFIG_PATH for libevent
-must set this env first, or configure of tmux cannot find libevent. 
+# set PKG_CONFIG_PATH for libevent
+# must set this env first, or configure of tmux cannot find libevent. 
 
 > export PKG_CONFIG_PATH=/users/penxiang/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 
-git clone https://github.com/tmux/tmux
-cd tmux
-sh autogen.sh
-./configure --prefix=/users/penxiang/usr/
-make -j
-make install
+> git clone https://github.com/tmux/tmux
+> cd tmux
+# checkout to latest stable version. default it was on master branch.
+> git tag
+2.0
+2.1
+2.2
+2.3
+2.4
+2.5
+2.6
+> git checkout 2.6
+HEAD is now at bd71cbb... 2.6.
+> sh autogen.sh
+> ./configure --prefix=/users/penxiang/usr/
+> make -j
+> make install
 
-./tmux
+Then
+> ./tmux
 ./tmux: error while loading shared libraries: libevent-2.1.so.6: cannot open shared object file: No such file or directory
 
 It said that libevent-2.1 had not been loaded yet, and below shows that.
@@ -92,6 +104,9 @@ and then
 
 we can see libevent-2.1.so.6 => /users/penxiang/usr/lib/libevent-2.1.so.6 (0x00007fb351970000).
 
+> ./tmux -V
+tmux 2.6
+
 # set env for using tmux
 vim ~/.bashrc
 export PATH=/users/penxiang/usr/bin:$PATH
@@ -99,14 +114,15 @@ export PKG_CONFIG_PATH=/users/penxiang/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/users/penxiang/usr/lib
 
 # copy config file
-mv _.tmux.conf ~/.tmux.conf
+> mv ~/.tmux.conf ~/.tmux.conf.bak
+> cp _.tmux.conf ~/.tmux.conf
 
 ```
 # Reference
 
 [pkg-config-guide](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
 
-[pkg-config detail explanation](http://blog.csdn.net/newchenxf/article/details/51750239)
+[PKG_CONFIG_PATH detail explanation](http://blog.csdn.net/newchenxf/article/details/51750239)
 
 [LD_LIBRARY_PATH refer](http://blog.csdn.net/wangeen/article/details/8159500)
 
