@@ -2,13 +2,13 @@
 ssh login issue caused by through SSH -D dynamic tunnelling.
 
 ## scene
+```bash
       step1:  ssh -vv -ND 8080 [Laptop_ip] -l [login_name on Laptop]
      ---------------------------------------------------------------->
 VIRL                                                                    Laptop
      -----------------------------------------------------------------
 now I want to login laptop through this socks5 proxy setup by step1 on VIRL.
 
-```bash
 > hostname
 virl
 > ssh -p 8080 localhost -l [login_name on Laptop]
@@ -84,3 +84,7 @@ debug2: client_check_window_change: changed
 
 Success Now.
 ```
+
+# Reference
+[ssh over netcat](https://www.lainme.com/doku.php/blog/2011/01/%E9%80%8F%E8%BF%87%E4%BB%A3%E7%90%86%E8%BF%9E%E6%8E%A5ssh)
+
