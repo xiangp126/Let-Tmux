@@ -1,6 +1,6 @@
 # self_tmux
 
-Guide for how to build tmux on Linux that I did not have root privilege.
+Guide for how to build tmux on Linux in case that I did not have root privilege.
 
 ``` bash
 > cd ~
