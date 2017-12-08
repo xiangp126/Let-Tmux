@@ -85,6 +85,32 @@ debug2: client_check_window_change: changed
 Success Now.
 ```
 
+# for git use
+for git push origin master use
+``` bash
+> cd ~/.ssh
+# add config with below contents.
+> cat config
+
+# Should be placed at ~/.ssh/config, make it if not exist. 
+# or you should edit line at /etc/ssh/ssh_config
+# 49 #   ProxyCommand ssh -q -W %h:%p gateway.example.com
+Host *
+  ProxyCommand netcat -x 127.0.0.1:8080 %h %p
+
+> git push origin master
+Counting objects: 5, done.
+Delta compression using up to 60 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 434 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To git@github.com:xiangp126/cc_tmux
+   1ef2357..5cfb337  master -> master
+
+```
+
+
 # Reference
 [ssh over netcat](https://www.lainme.com/doku.php/blog/2011/01/%E9%80%8F%E8%BF%87%E4%BB%A3%E7%90%86%E8%BF%9E%E6%8E%A5ssh)
 
