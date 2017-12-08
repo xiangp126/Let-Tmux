@@ -17,6 +17,7 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 needs libevent 2.x
 
 ``` bash
+> cd ~/_mytarball
 > wget https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
 > tar -zxv -f libevent-2.1.8-stable.tar.gz
 > cd libevent-2.1.8-stable
@@ -27,6 +28,7 @@ needs libevent 2.x
 
 ## what is .pc file
 ``` bash
+> cd ~/usr/lib/pkgconfig
 > pwd
 /users/penxiang/usr/lib/pkgconfig
 > cat /users/penxiang/usr/lib/pkgconfig/libevent.pc
@@ -61,6 +63,7 @@ must set this env first, or configure of tmux cannot find libevent.
 > export PKG_CONFIG_PATH=/users/penxiang/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 ```
 ``` bash
+> cd ~/_mytarball
 > git clone https://github.com/tmux/tmux
 > cd tmux
 # checkout to latest stable version. default it was on master branch.
@@ -86,7 +89,7 @@ Then
 It said that libevent-2.1 had not been loaded yet, and below shows that.
 ```
 
-## set LD_LIBRARY_PATH for libevent
+### set LD_LIBRARY_PATH for libevent
 ``` bash
 > pwd
 /users/penxiang/_mytarball/tmux
@@ -121,14 +124,18 @@ we can see libevent-2.1.so.6 => /users/penxiang/usr/lib/libevent-2.1.so.6 (0x000
 
 > ./tmux -V
 tmux 2.6
+```
 
-# set env for using tmux
-vim ~/.bashrc
+### set env for using tmux
+```bash
+> vim ~/.bashrc
 export PATH=/users/penxiang/usr/bin:$PATH
 export PKG_CONFIG_PATH=/users/penxiang/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/users/penxiang/usr/lib
+```
 
-# copy config file
+### copy config file
+``` bash
 > mv ~/.tmux.conf ~/.tmux.conf.bak
 > cp _.tmux.conf ~/.tmux.conf
 ```
