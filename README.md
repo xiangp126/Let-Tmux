@@ -54,12 +54,13 @@ Cflags: -I${includedir}
 
 ## compile tmux
 
-set PKG_CONFIG_PATH for libevent
+### set PKG_CONFIG_PATH for libevent
 must set this env first, or configure of tmux cannot find libevent. 
 
 ``` bash
 > export PKG_CONFIG_PATH=/users/penxiang/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
-
+```
+``` bash
 > git clone https://github.com/tmux/tmux
 > cd tmux
 # checkout to latest stable version. default it was on master branch.
