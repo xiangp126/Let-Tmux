@@ -5,10 +5,13 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 # file list
 
 * _.tmux.conf
+
 tmux config files with good behaviour.
 * gitproxy_sample.sh
+
 a small script used to setup http & https proxy through socks5 proxy.
 * compiliation guide
+guide for compile tmux.
 
 # compilation guide
 ``` bash
