@@ -1,5 +1,6 @@
-# copyright by Peng, last edit 12-08 2017
-# ssh login issue caused by through SSH -D dynamic tunnelling.
+# ssh over ssh tunnel issue
+ssh login issue caused by through SSH -D dynamic tunnelling.
+
 ## scene
       step1:  ssh -vv -ND 8080 [Laptop_ip] -l [login_name on Laptop]
      ---------------------------------------------------------------->
@@ -7,6 +8,7 @@ VIRL                                                                    Laptop
      -----------------------------------------------------------------
 now I want to login laptop through this socks5 proxy setup by step1 on VIRL.
 
+```bash
 > hostname
 virl
 > ssh -p 8080 localhost -l [login_name on Laptop]
@@ -30,8 +32,10 @@ notice this line: debug1: Connection to port 8080 forwarding to socks port 0 req
 forwarding to socks port 0, notice this port 0.
 
 ssh use -p 8080 to connect proxy, but proxy did not which port to forward, 0 is now the default.
+```
 
 ## solve this issue
+``` bash
 # netcat is named as nc on some Linux.
 > ssh -vv -o ProxyCommand='netcat -x 127.0.0.1:8080 %h %p' [Laptop_ip] -l [login_name on Laptop]
 
@@ -79,3 +83,4 @@ debug2: client_check_window_change: changed
 # end of log
 
 Success Now.
+```
