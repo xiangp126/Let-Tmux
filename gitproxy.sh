@@ -41,6 +41,7 @@ install() {
     if [ -f ${cfgFilePath} ]; then
         echo "Found $cfgFile file, backup $cfgFile to ${cfgFile}.bak"
         cd ~/.ssh
+        echo mv $cfgFile ${cfgFile}.bak
         mv $cfgFile ${cfgFile}.bak
         cd - &>/dev/null
         echo Backup Done!
