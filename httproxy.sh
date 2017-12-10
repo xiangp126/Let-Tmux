@@ -3,7 +3,7 @@
 # but no ssh-key.
 
 usage() {
-    echo "purpose: git push using proxy socks5://127.0.0.0:8080 establisned by SSH reverse tunnel."
+    echo "purpose: git clone using proxy socks5://127.0.0.0:8080 establisned by SSH reverse tunnel."
     echo "ensure first: ssh -vv -ND 8080 midman_server -l log_name"
     echo "syntax: $0 enable | disable"
 }
