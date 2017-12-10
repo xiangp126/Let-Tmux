@@ -9,7 +9,7 @@
 usage() {
     echo "git push using proxy, proxy socks5://127.0.0.0:8080 through SSH reverse tunnel."
     echo "pls ensure first: ssh -vv -ND 8080 -l [logName] [midmanServer]"
-    echo "syntax: $0 install | uninstall"
+    echo "syntax: $0 enable | disable"
 }
 
 # proxycommand use by ssh command.
@@ -24,7 +24,7 @@ fi
 cfgFile=config
 cfgFilePath=~/.ssh/$cfgFile
 
-uninstall() {
+disable() {
     if [ -f $cfgFilePath ]; then
         echo "Found $cfgFile file, Moving $cfgFile to ${cfgFile}.bak"
         cd ~/.ssh
@@ -37,7 +37,7 @@ uninstall() {
     fi
 }
 
-install() {
+enable() {
     if [ -f ${cfgFilePath} ]; then
         echo "Found $cfgFile file, backup $cfgFile to ${cfgFile}.bak"
         cd ~/.ssh
@@ -63,12 +63,12 @@ install() {
 }
 
 case $1 in
-    'install')
-        install
+    'enable')
+        enable
     ;;
 
-    'uninstall')
-        uninstall
+    'disable')
+        disable
     ;;
 esac;
 
