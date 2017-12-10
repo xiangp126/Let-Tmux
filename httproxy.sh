@@ -3,8 +3,8 @@
 # but no ssh-key.
 
 usage() {
-    echo "git push using proxy, proxy socks5://127.0.0.0:8080 through SSH reverse tunnel."
-    echo "ssh -vv -ND 8080 midman_server -l log_name"
+    echo "purpose: git push using proxy socks5://127.0.0.0:8080 establisned by SSH reverse tunnel."
+    echo "ensure first: ssh -vv -ND 8080 midman_server -l log_name"
     echo "syntax: $0 enable | disable"
 }
 
@@ -36,6 +36,12 @@ case $1 in
     ;;
 esac;
 
-echo "> git config --global --list"
-git config --global --list
+echo "> git config --global --list | grep -i proxy"
+git config --global --list | grep -i proxy
+
+echo -e "\n-----------------------------------------"
+echo -e 'At last echo $http_proxy and $https_proxy'
+echo -e "-----------------------------------------"
+echo http_proxy  = $http_proxy
+echo https_proxy = $https_proxy
 

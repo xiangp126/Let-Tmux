@@ -20,11 +20,7 @@ if [ $# -le 0 ]; then
     exit
 fi
 
-# Only git did not need below 2 variables.
-# With these 2, did not need git config http.proxy.
-# export http_proxy=socks5://127.0.0.1:8080
-# export https_proxy=socks5://127.0.0.1:8080
-
+# config file name.
 cfgFile=config
 cfgFilePath=~/.ssh/$cfgFile
 
@@ -35,6 +31,9 @@ uninstall() {
         mv $cfgFile ${cfgFile}.bak
         cd - &>/dev/null
         echo Move Done!
+    else 
+        echo "Already has no $cfgFilePath, Quiting Now ..."
+        exit
     fi
 }
 

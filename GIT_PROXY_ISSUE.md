@@ -1,5 +1,5 @@
 # ssh over ssh tunnel issue
-ssh login issue caused by through SSH -D dynamic tunnelling.
+ssh login issue through SSH -D dynamic established tunnel.
 
 ## scene
 ```bash
@@ -7,7 +7,7 @@ ssh login issue caused by through SSH -D dynamic tunnelling.
      ---------------------------------------------------------------->
 VIRL                                                                    Laptop
      -----------------------------------------------------------------
-now I want to login laptop through this socks5 proxy setup by step1 on VIRL.
+now I want to login laptop through this socks5 proxy setup in step1 from VIRL.
 
 > hostname
 virl
@@ -34,7 +34,7 @@ forwarding to socks port 0, notice this port 0.
 ssh use -p 8080 to connect proxy, but proxy did not which port to forward, 0 is now the default.
 ```
 
-## solve this issue
+## ssh proxycommand
 ``` bash
 # netcat is named as nc on some Linux.
 > ssh -vv -o ProxyCommand='netcat -x 127.0.0.1:8080 %h %p' [Laptop_ip] -l [login_name on Laptop]
@@ -85,14 +85,14 @@ debug2: client_check_window_change: changed
 Success Now.
 ```
 
-# for git use
+## for git use
 for git push use, note that: git pull uses https not ssh.
 
 only https usage need not following configuration.
 
 ``` bash
 > cd ~/.ssh
-# add config with below contents.
+# you can use shell gitproxy.sh or manually add file config with below contents.
 > cat config
 
 # Should be placed at ~/.ssh/config, make it if not exist. 
@@ -113,7 +113,10 @@ To git@github.com:xiangp126/cc_tmux
 
 ```
 
-
 # Reference
+[ssh-proxycommand](http://mingxinglai.com/cn/2015/07/ssh-proxycommand/)
+
+[SSH Kung Fu](https://blog.tjll.net/ssh-kung-fu/)
+
 [ssh over netcat](https://www.lainme.com/doku.php/blog/2011/01/%E9%80%8F%E8%BF%87%E4%BB%A3%E7%90%86%E8%BF%9E%E6%8E%A5ssh)
 
