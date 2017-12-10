@@ -92,7 +92,7 @@ only https usage need not following configuration.
 
 ``` bash
 > cd ~/.ssh
-# you can use shell gitproxy.sh or manually add file config with below contents.
+# you can use shell sshproxy.sh or manually add file config with below contents.
 > cat config
 
 # Should be placed at ~/.ssh/config, make it if not exist. 
