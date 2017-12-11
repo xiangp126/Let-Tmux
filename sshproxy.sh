@@ -24,6 +24,18 @@ fi
 cfgFile=config
 cfgFilePath=~/.ssh/$cfgFile
 
+writeCfg() {
+# write contents to config file.
+cat << EOF > $1
+# config
+# Should be placed at ~/.ssh/config, make it if not exist. 
+# or you should edit line at /etc/ssh/ssh_config
+# 49 #   ProxyCommand ssh -q -W %h:%p gateway.example.com
+Host *
+    ProxyCommand netcat -x 127.0.0.1:8080 %h %p
+EOF
+}
+
 disable() {
     if [ -f $cfgFilePath ]; then
         echo "Found $cfgFile file, Moving $cfgFile to ${cfgFile}.bak"
@@ -46,19 +58,13 @@ enable() {
         cd - &>/dev/null
         echo Backup Done!
     fi
-    # writing comments part to config.
-    echo writing comments part to config ...
-    echo "# config"                                                   >> $cfgFilePath
-    echo "# Should be placed at ~/.ssh/config, make it if not exist." >> $cfgFilePath
-    echo "# or you should edit line at /etc/ssh/ssh_config."          >> $cfgFilePath
-    echo "# 49 #   ProxyCommand ssh -q -W %h:%p gateway.example.com." >> $cfgFilePath
-    
-    # writing main part to config
-    echo writing main part to config ...
-    echo "Host *"                                                   >> $cfgFilePath
-    echo "  ProxyCommand netcat -x 127.0.0.1:8080 %h %p"            >> $cfgFilePath
+
+    # pass parameter to the self-defined function.
+    echo Writing Contents to config: $cfgFilePath
+    writeCfg $cfgFilePath
     
     echo "cat ~/.ssh/$cfgFile"
+    echo "--------------------------------------------------"
     cat ~/.ssh/$cfgFile
 }
 
