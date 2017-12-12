@@ -21,7 +21,7 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 # .mytarball to store downloaded tarballs.
 > mkdir .mytarball
 ```
-## [optional 1] compile libevent 
+## <optional 1> compile libevent 
 tmux needs libevent 2.x support
 
 missing probility: % % %
@@ -36,7 +36,7 @@ missing probility: % % %
 > make install
 ```
 
-## [optional 2] compile ncurses
+## <optional 2> compile ncurses
 tmux dependes on ncurses.
 
 missing probility: %
