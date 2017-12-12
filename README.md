@@ -21,6 +21,7 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 ```
 ## [optional 1] compile libevent 
 tmux needs libevent 2.x support
+
 missing probility: % % %
 
 ``` bash
@@ -35,7 +36,9 @@ missing probility: % % %
 
 ## [optional 2] compile ncurses
 tmux dependes on ncurses.
+
 missing probility: %
+
 There is little chance missing ncurses for the platform, 
 though self-compile it is a little complex.
 ```bash
@@ -75,10 +78,10 @@ Libs: -L${libdir} -levent
 Libs.private: -lcrypto -lrt
 Cflags: -I${includedir}
 
-_________________________________________________________
-Attention: ncurses did not generate .pc file after 'make'
+---------------------------------------------------------
+ncurses did not generate .pc file after 'make'
 so you have to add one as libevent.pc.
-_________________________________________________________
+---------------------------------------------------------
 ```
 
 ## what is pkg-config ?
@@ -111,6 +114,7 @@ for example:
 
 ## set PKG_CONFIG_PATH for libevent
 must set this env first, or ./configure of tmux cannot find libevent or ncurses.
+
 the path also suitable for ncurses.
 
 ``` bash
@@ -118,9 +122,9 @@ the path also suitable for ncurses.
 ```
 
 ## self-add ncurses.pc for ncurses packages
-packages ncurses-5.9 tar.gz, after 'make'
-had not generated *.pc files at all, so for Tmux use, one must
-add such a file by himself. Use ncurses-config to determine what is needed.
+packages ncurses-5.9 tar.gz, after 'make' had not generated *.pc files at all.
+
+so for Tmux use, one must add such a file by himself. Use ncurses-config to determine what is needed.
 ```bash
 > pwd
 /home/pi/.usr/bin
@@ -146,14 +150,35 @@ Libs: -L${libdir} -lncurses
 # Libs.private: -lncurses
 Cflags: -I${includedir}
 
-```
 ------------------------------------------------------------------------------------
 The name of the pc file must match what is used for check in configure file of Tmux.
 Or ./configure of tmux also can not detect the existence of them.
 By search in the log of 'sh -x confgure --prefix=/home/pi/.usr &> pkg_config.log'
 we found it used ncurses or ncursesw for detection, not libncurses at first assumed.
 ------------------------------------------------------------------------------------
-> ++ /usr/bin/pkg-config --libs ncurses
+> sh -x confgure --prefix=/home/pi/.usr &> pkg_config.log
+> vim pkg_config.log
+# partial of pkg_config.log
+
+++ /usr/bin/pkg-config --libs ncurses
++ pkg_cv_LIBNCURSES_LIBS='-L/home/pi/.usr/lib -lncurses  '
++ test x0 '!=' x0
++ test no = yes
++ test no = untried
++ LIBNCURSES_CFLAGS='-I/home/pi/.usr/include/ncurses  '
++ LIBNCURSES_LIBS='-L/home/pi/.usr/lib -lncurses  '
++ printf '%s\n' 'configure:5622: result: yes'
++ printf '%s\n' yes
+yes
++ found_ncurses=yes
++ test xyes = xno
++ test xyes = xyes
+
+......
+
+We see it used ++ /usr/bin/pkg-config --libs ncurses
+so we name this pc file ncurses.pc, not libncurses.pc.
+```
 
 ## compile tmux
 
