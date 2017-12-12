@@ -4,12 +4,14 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 
 # file list
 
-* _.tmux.conf: tmux config files with good behaviour.
+* GIT_PROXY_ISSUE.md: solution of key ssh over ssh communication issue.
+* Compiliation guide: guide for compile tmux (written in this Readme.md).
 * sshproxy.sh: a small script used to setup http & https socks5 proxy useful for 'git clone'.
 * httproxy.sh: a small script used to setup ssh config used for 'git push'.
 * _config: sample ssh config file - proxycommand.
-* GIT_PROXY_ISSUE.md: solution of key ssh over ssh communication issue.
-* Compiliation guide: guide for compile tmux (written in this Readme.md).
+* _.tmux.conf: tmux config files with good behaviour.
+* ncurses.pc: self-made .pc file for compile tmux(using ncurses packages).
+* pk_config.log: sh -x ./configure --prefix=XX for compiling tmux.
 
 # compilation guide
 ``` bash
