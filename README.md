@@ -121,7 +121,7 @@ the path also suitable for ncurses.
 > export PKG_CONFIG_PATH=/home/pi/.usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 ```
 
-## self-add ncurses.pc for ncurses packages
+## make one ncurses.pc for ncurses packages
 packages ncurses-5.9 tar.gz, after 'make' had not generated *.pc files at all.
 
 so for Tmux use, one must add such a file by himself. Use ncurses-config to determine what is needed.
@@ -151,11 +151,12 @@ Libs: -L${libdir} -lncurses
 Cflags: -I${includedir}
 
 ------------------------------------------------------------------------------------
-The name of the pc file must match what is used for check in configure file of Tmux.
+The name of the pc file must match what is used for checking in configure file of Tmux.
 Or ./configure of tmux also can not detect the existence of them.
-By search in the log of 'sh -x confgure --prefix=/home/pi/.usr &> pkg_config.log'
+By searching the log of 'sh -x confgure --prefix=/home/pi/.usr &> pkg_config.log'
 we found it used ncurses or ncursesw for detection, not libncurses at first assumed.
 ------------------------------------------------------------------------------------
+
 > sh -x confgure --prefix=/home/pi/.usr &> pkg_config.log
 > vim pkg_config.log
 # partial of pkg_config.log
@@ -176,7 +177,7 @@ yes
 
 ......
 
-We see it used ++ /usr/bin/pkg-config --libs ncurses
+We see it used '++ /usr/bin/pkg-config --libs ncurses'
 so we name this pc file ncurses.pc, not libncurses.pc.
 ```
 
