@@ -2,7 +2,7 @@
 
 Guide for how to build tmux on Linux in case that I did not have root privilege.
 
-# file list
+# File List
 
 * GIT_PROXY_ISSUE.md: solution of key ssh over ssh communication issue.
 * Compiliation guide: guide for compile tmux (written in this Readme.md).
@@ -13,7 +13,7 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 * ncurses.pc: self-made .pc file for compile tmux(using ncurses packages).
 * pk_config.log: sh -x ./configure --prefix=XX for compiling tmux.
 
-# compilation guide
+# Compilation Guide
 ``` bash
 > cd ~
 # .usr to install packages.
