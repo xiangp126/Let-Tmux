@@ -114,9 +114,10 @@ To git@github.com:xiangp126/cc_tmux
 ```
 
 # Reference
+[OpenSSH/Cookbook/Proxies and Jump Hosts](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts)
+
 [ssh-proxycommand](http://mingxinglai.com/cn/2015/07/ssh-proxycommand/)
 
 [SSH Kung Fu](https://blog.tjll.net/ssh-kung-fu/)
 
 [ssh over netcat](https://www.lainme.com/doku.php/blog/2011/01/%E9%80%8F%E8%BF%87%E4%BB%A3%E7%90%86%E8%BF%9E%E6%8E%A5ssh)
-
