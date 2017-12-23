@@ -4,3 +4,4 @@ tmux
 libevent-*
 *.tar.gz
 ncurses-*
+ncurses.pc

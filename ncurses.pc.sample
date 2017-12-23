@@ -1,0 +1,15 @@
+# ncurses pkg-config source file
+
+prefix=/home/corsair/.usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/ncurses
+
+Name: ncurses
+Description: ncurses(libncurses) is new emulation of curses.
+Version: 5.9-stable
+Requires:
+Conflicts:
+Libs: -L${libdir} -lncurses
+# Libs.private: -lncurses
+Cflags: -I${includedir}
