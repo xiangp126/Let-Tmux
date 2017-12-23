@@ -167,7 +167,6 @@ _EOF
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LIBEVENT_INSTALL_DIR}/lib
 export PKG_CONFIG_PATH=${LIBEVENT_PKG_DIR}:$PKG_CONFIG_PATH
 _EOF
-fi
 
     chmod +x $envName
     cd - &> /dev/null
@@ -222,7 +221,7 @@ _EOF
 
 install() {
     installLibEvent
-#    installNcurses
+    installNcurses
     makeDynEnv
     installTmux
 }
