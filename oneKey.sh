@@ -138,7 +138,7 @@ _EOF
     make install
 
     echo Copying ncurses.pc to due path ...
-    cp ncurses.pc ${ncursesInstDir}/lib/pkgconfig/
+    cp ${startDir}/ncurses.pc ${ncursesInstDir}/lib/pkgconfig/
 
     cat << _EOF
     
