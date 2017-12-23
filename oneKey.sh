@@ -8,7 +8,6 @@ mainWd=$startDir
 
 # common install directory
 commInstdir=~/.usr
-
 libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
@@ -46,6 +45,16 @@ installLibEvent() {
 STEP 1: INSTALLING LIBEVENT ...
 ------------------------------------------------------
 _EOF
+
+    libeventNeedCompile=true
+    # libevent libevent - libevent is an asynchronous notification event loop library
+   whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'` 
+   if [[ "$whereIsLibevent" != "" ]]; then
+       echo [Warning]: system already has libevent installed, omitting it ...
+       libeventNeedCompile=false
+       return
+   fi
+
     libeventInstDir=$commInstdir
     wgetLink=https://github.com/libevent/libevent/releases/download/release-2.1.8-stable
     tarName=libevent-2.1.8-stable.tar.gz
@@ -71,6 +80,10 @@ _EOF
 
     tar -zxv -f libevent-2.1.8-stable.tar.gz
     cd $untarName
+    # fix env problem for openssl in MAC OS
+    export CPPFLAGS=-I/usr/local/opt/openssl/include
+    export LDFLAGS=-L/usr/local/opt/openssl/lib
+    # end fix
     ./configure --prefix=$libeventInstDir
     make -j
     make install
@@ -91,7 +104,7 @@ installNcurses() {
 ------------------------------------------------------
 STEP 1: INSTALLING NCURSES ...
 ------------------------------------------------------
-_EOF
+
     ncursesInstDir=$commInstdir
     wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
@@ -130,6 +143,7 @@ _EOF
     ./configure --prefix=$libeventInstDir
     make -j
     make install
+_EOF
 
     cat << _EOF
     
@@ -143,138 +157,79 @@ _EOF
 makeTecEnv() {
     # enter into dir first
     cd $startDir
-    envName=dynamic.env
-    TOMCAT_HOME=${tomcatInstDir}
-    CATALINA_HOME=$TOMCAT_HOME
+    envName=$dynamicEnvName
 
+    LIBEVENT_INSTALL_DIR=$commInstdir
+    if [[ "$libeventNeedCompile" == "true" ]]; then
     # parse value of $var
-    cat > $envName << _EOF
+        cat > $envName << _EOF
 #!/bin/bash
-export COMMON_INSTALL_DIR=$commInstdir
-export JAVA_HOME=${javaInstDir}
-export JRE_HOME=${JAVA_HOME}/jre
-export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
-export TOMCAT_USER=${tomcatUser}
-export TOMCAT_HOME=${TOMCAT_HOME}
-export CATALINA_HOME=${TOMCAT_HOME}
-export CATALINA_BASE=${TOMCAT_HOME}
-export CATALINA_TMPDIR=${TOMCAT_HOME}/temp
-export OPENGROK_INSTANCE_BASE=${opengrokInstanceBase}
-export OPENGROK_TOMCAT_BASE=$CATALINA_HOME
+export LIBEVENT_INSTALL_DIR=$LIBEVENT_INSTALL_DIR
+export LIBEVENT_PKG_DIR=${LIBEVENT_INSTALL_DIR}/lib/pkgconfig
 _EOF
 
     # do not parse value of $var
     cat >> $envName << "_EOF"
-export PATH=${COMMON_INSTALL_DIR}/bin:${JAVA_HOME}/bin:$PATH
+export PKG_CONFIG_PATH=${LIBEVENT_PKG_DIR}:$PKG_CONFIG_PATH
 _EOF
+fi
 
     chmod +x $envName
     cd - &> /dev/null
     # as return value of this func
-    echo $envName
 }
 
-# deploy OpenGrok
-installOpenGrok() {
+installTmux() {
+    
     cat << "_EOF"
     
 ------------------------------------------------------
-STEP 4: INSTALLING OPENGROK ...
+STEP 3: INSTALLING TMUX ...
 ------------------------------------------------------
 _EOF
 
-    wgetLink="https://github.com/oracle/opengrok/releases/download/1.1-rc18"
-    tarName="opengrok-1.1-rc18.tar.gz"
-    untarName="opengrok-1.1-rc18"
+    tmuxInstDir=$commInstdir
+    repoLink=https://github.com/tmux
+    repoName=tmux
 
     cd $startDir
     # check if already has this tar ball.
-    if [[ -f $tarName ]]; then
-        echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
+    if [[ -d $repoName ]]; then
+        echo [Warning]: Github repository $repoName already exists, Omitting clone ...
     else
-        wget --no-cookies \
-        --no-check-certificate \
-        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-        "${wgetLink}/${tarName}" \
-        -O $tarName
+        git clone $repoLink/$repoName
 
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
-            echo [Error]: wget returns error, quiting now ...
+            echo [Error]: git clone returns error, quiting now ...
             exit
         fi
     fi
-    tar -zxv -f $tarName 
 
-    echo ------------------------------------------------------
-    echo BEGIN TO MAKE ENV FILE FOR SOURCE ...
-    echo ------------------------------------------------------
-    # env name is the return value of func makeTecEnv
-    makeTecEnv
-    envName=$dynamicEnvName
+    # master -> v2.6
+    checkoutVersion=2.6
+    cd $repoName
+    git checkout $checkoutVersion
+    sh autogen.sh
+    ./configure --prefix=$tmuxInstDir
+    make -j
+    make install
 
-    # source ./$envName
-    # enter into opengrok dir
-    cd $untarName/bin
-    chmod +w OpenGrok
-
-    # add source command at top of script OpenGrok
-    sed -i "2a source ${startDir}/${envName}" OpenGrok
-    ln -sf "`pwd`"/OpenGrok ${commInstdir}/bin/openGrok 
-    # and then can run deploy well
-    sudo ./OpenGrok deploy
-
-    cd - &> /dev/null
-
-    cat << "_EOF"
+    cat << _EOF
     
 ------------------------------------------------------
-STEP 4: INSTALLING OPENGROK DONE ...
+INSTALLING TMUX DONE ...
+tmux -V = `$tmuxInstDir/bin/tmux -V`
+tmux path = $tmuxInstDir/bin/
 ------------------------------------------------------
-_EOF
-}
-
-summaryInstall() {
-    set +x
-    logo
-
-    cat << _EOF
-
-******************************************************
-*                  UNIVERSAL CTAGS                   *
-******************************************************
-_EOF
-echo export PATH=${commInstdir}:'$PATH'
-
-    cat << _EOF
-
-******************************************************
-*                  JAVA JAVA JAVA 8                  *
-******************************************************
-
-******************************************************
-*                  TOMCAT TOMCAT 8                   *
-******************************************************
-# start tomcat
-sudo sh ./daemon.sh run &> /dev/null &
-# stop tomcat
-sudo sh ./daemon.sh stop
-
-******************************************************
-*                  OPENGROK 1.1-RC18                 *
-******************************************************
-# deploy OpenGrok
-sudo sh ./OpenGrok deploy
-# make index of source
-sudo sh ./OpenGrok index /usr/local/src/coreutils-8.21
-------------------------------------------------------
-
 _EOF
 }
 
 install() {
     installLibEvent
-    installNcurses
+#    installNcurses
+    makeTecEnv
+    installTmux
 }
 
 case $1 in
