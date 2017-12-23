@@ -1,7 +1,3 @@
-# cc_tmux
-
-Guide for how to build tmux on Linux in case that I did not have root privilege.
-
 # File List
 
 * GIT_PROXY_ISSUE.md: solution of key ssh over ssh communication issue.
@@ -13,14 +9,27 @@ Guide for how to build tmux on Linux in case that I did not have root privilege.
 * ncurses.pc: self-made .pc file for compile tmux(using ncurses packages).
 * pk_config.log: sh -x ./configure --prefix=XX for compiling tmux.
 
-# Compilation Guide
+# Quick Start
 ``` bash
-> cd ~
-# .usr to install packages.
-> mkdir .usr
-# .mytarball to store downloaded tarballs.
-> mkdir .mytarball
+$ sh oneKey.sh
+
+[NAME]
+        oneKey.sh -- setup Tmux through one script
+
+[USAGE]
+        oneKey.sh [install | help]
+
+ _____ __  __ _   ___  __
+|_   _|  \/  | | | \ \/ /
+  | | | |\/| | | | |\  /
+  | | | |  | | |_| |/  \
+  |_| |_|  |_|\___//_/\_\
+
+$ sh oneKey.sh install
+# verified on MAC OS/Ubuntu/CentOS
+
 ```
+# Guide
 ## compile libevent (optional)
 tmux needs libevent 2.x support
 
@@ -261,10 +270,6 @@ export PKG_CONFIG_PATH=/home/pi/.usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 ```
 
-### copy config file
-``` bash
-> mv ~/.tmux.conf ~/.tmux.conf.bak
-> cp _.tmux.conf ~/.tmux.conf
 ```
 
 # Reference
