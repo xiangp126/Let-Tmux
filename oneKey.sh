@@ -12,6 +12,8 @@ libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
 dynamicEnvName=dynamic.env
+# make installation directory
+mkdir -p $commInstdir
 
 logo() {
     cat << "_EOF"
@@ -105,20 +107,11 @@ installNcurses() {
 STEP 1: INSTALLING NCURSES ...
 ------------------------------------------------------
 
+_EOF
     ncursesInstDir=$commInstdir
     wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
-    untarName=libevent-2.1.8-stable
-
-> wget ncurses.tar.gz
-> tar -zxv -f ncurses.tar.gz
-> ./configure --prefix=/home/pi/.usr/
-# you'd better just use 'make', not 'make -j' for the first time you compile.
-# Or it'll end up with err: undefined reference to `leaveok'
-> make 
-> make install
-
-
+    untarName=
 
     # rename download package
     cd $startDir
@@ -138,12 +131,11 @@ STEP 1: INSTALLING NCURSES ...
         fi
     fi
 
-    tar -zxv -f libevent-2.1.8-stable.tar.gz
+    tar -zxv -f $tarName
     cd $untarName
-    ./configure --prefix=$libeventInstDir
+    ./configure --prefix=$ncursesInstDir
     make -j
     make install
-_EOF
 
     cat << _EOF
     
@@ -154,15 +146,17 @@ libevent path = $libeventInstDir/bin/
 _EOF
 }
 
-makeTecEnv() {
+# make file, dynamic environment
+makeDynEnv() {
     # enter into dir first
     cd $startDir
     envName=$dynamicEnvName
+    # delete it if exists
+    rm -rf $envName
 
     LIBEVENT_INSTALL_DIR=$commInstdir
-    if [[ "$libeventNeedCompile" == "true" ]]; then
     # parse value of $var
-        cat > $envName << _EOF
+    cat > $envName << _EOF
 #!/bin/bash
 export LIBEVENT_INSTALL_DIR=$LIBEVENT_INSTALL_DIR
 export LIBEVENT_PKG_DIR=${LIBEVENT_INSTALL_DIR}/lib/pkgconfig
@@ -170,6 +164,7 @@ _EOF
 
     # do not parse value of $var
     cat >> $envName << "_EOF"
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LIBEVENT_INSTALL_DIR}/lib
 export PKG_CONFIG_PATH=${LIBEVENT_PKG_DIR}:$PKG_CONFIG_PATH
 _EOF
 fi
@@ -228,7 +223,7 @@ _EOF
 install() {
     installLibEvent
 #    installNcurses
-    makeTecEnv
+    makeDynEnv
     installTmux
 }
 
