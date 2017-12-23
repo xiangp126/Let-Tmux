@@ -258,8 +258,9 @@ _EOF
 
 install() {
     installLibEvent
+    sleep 1
     installNcurses
-    makeDynEnv
+    sleep 1
     installTmux
 }
 
