@@ -137,6 +137,9 @@ _EOF
     make -j
     make install
 
+    echo Copying ncurses.pc to due path ...
+    cp ncurses.pc ${ncursesInstDir}/lib/pkgconfig/
+
     cat << _EOF
     
 ------------------------------------------------------
@@ -181,7 +184,10 @@ installTmux() {
 STEP 3: INSTALLING TMUX ...
 ------------------------------------------------------
 _EOF
-
+    # make dynamic env before source it.
+    makeDynEnv
+    # source dynamic.env first
+    source ${startDir}/$dynamicEnvName
     tmuxInstDir=$commInstdir
     repoLink=https://github.com/tmux
     repoName=tmux
