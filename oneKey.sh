@@ -104,14 +104,14 @@ installNcurses() {
     cat << "_EOF"
     
 ------------------------------------------------------
-STEP 1: INSTALLING NCURSES ...
+STEP 2: INSTALLING NCURSES ...
 ------------------------------------------------------
 
 _EOF
     ncursesInstDir=$commInstdir
     wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
-    untarName=
+    untarName=ncurses-5.9
 
     # rename download package
     cd $startDir
