@@ -148,9 +148,12 @@ _EOF
     echo Making $ncursesPcName to due path ...
 
     cat > $ncursesPcName << _EOF
-#ncurses pkg-config source file
+# ncurses pkg-config source file
 
 prefix=$ncursesInstDir
+_EOF
+
+    cat >> $ncursesPcName << "_EOF"
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/ncurses

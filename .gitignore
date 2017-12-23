@@ -1,4 +1,6 @@
 *.swp
 *.swo
 tmux
-libevent*
+libevent-*
+*.tar.gz
+ncurses-*
