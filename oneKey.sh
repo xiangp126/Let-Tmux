@@ -48,14 +48,12 @@ STEP 1: INSTALLING LIBEVENT ...
 ------------------------------------------------------
 _EOF
 
-    libeventNeedCompile=true
     # libevent libevent - libevent is an asynchronous notification event loop library
-   whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'` 
-   if [[ "$whereIsLibevent" != "" ]]; then
-       echo [Warning]: system already has libevent installed, omitting it ...
-       libeventNeedCompile=false
-       return
-   fi
+    whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'` 
+    if [[ "$whereIsLibevent" != "" ]]; then
+        echo [Warning]: system already has libevent installed, omitting it ...
+        return
+    fi
 
     libeventInstDir=$commInstdir
     wgetLink=https://github.com/libevent/libevent/releases/download/release-2.1.8-stable
@@ -69,10 +67,10 @@ _EOF
         echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
     else
         wget --no-cookies \
-        --no-check-certificate \
-        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-        "${wgetLink}/${tarName}" \
-        -O $tarName
+            --no-check-certificate \
+            --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+            "${wgetLink}/${tarName}" \
+            -O $tarName
 
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
@@ -108,6 +106,13 @@ STEP 2: INSTALLING NCURSES ...
 ------------------------------------------------------
 
 _EOF
+    # ncurses: libncurses is a new free software emulation of curses. 
+    whereIsNcurses=`pkg-config --list-all | grep -i '^ncurses\b'` 
+    if [[ "$whereIsNcurses" != "" ]]; then
+        echo [Warning]: system already has ncurses installed, omitting it ...
+        return
+    fi
+
     ncursesInstDir=$commInstdir
     wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
@@ -137,8 +142,31 @@ _EOF
     make -j
     make install
 
-    echo Copying ncurses.pc to due path ...
-    cp ${startDir}/ncurses.pc ${ncursesInstDir}/lib/pkgconfig/
+    # go back to start dir to make ncurses.pc
+    cd $startDir
+    ncursesPcName=ncurses.pc
+    echo Making $ncursesPcName to due path ...
+
+    cat > $ncursesPcName << _EOF
+#ncurses pkg-config source file
+
+prefix=$ncursesInstDir
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/ncurses
+
+Name: ncurses
+Description: ncurses(libncurses) is new emulation of curses. 
+Version: 5.9-stable
+Requires:
+Conflicts:
+Libs: -L${libdir} -lncurses
+# Libs.private: -lncurses
+Cflags: -I${includedir}
+_EOF
+
+    echo Copying $ncursesPcName to due path ...
+    cp $ncursesPcName ${ncursesInstDir}/lib/pkgconfig/
 
     cat << _EOF
     
