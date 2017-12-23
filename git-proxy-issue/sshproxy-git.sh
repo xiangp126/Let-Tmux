@@ -6,10 +6,35 @@
 # Host *
 #   ProxyCommand netcat -x 127.0.0.1:8080 %h %p
 
+logo() {
+    cat << "_EOF"
+         _
+ ___ ___| |__  _ __  _ __ _____  ___   _
+/ __/ __| '_ \| '_ \| '__/ _ \ \/ / | | |
+\__ \__ \ | | | |_) | | | (_) >  <| |_| |
+|___/___/_| |_| .__/|_|  \___/_/\_\\__, |
+              |_|                  |___/
+_EOF
+}
+
 usage() {
-    echo "git push using proxy, proxy socks5://127.0.0.0:8080 through SSH reverse tunnel."
-    echo "pls ensure first: ssh -vv -ND 8080 -l [logName] [midmanServer]"
-    echo "syntax: $0 enable | disable"
+    exeName=${0##*/}
+    cat << _EOF
+[NAME]
+    $exeName -- setup proxy for ssh connection from socks5 proxy
+
+[SYNOPSIS]
+    sh $exeName [install | uninstall | help]
+
+[DESCRIPTION]
+    git push using proxy through SSH reverse tunnel.
+    proxy => socks5://127.0.0.1:8080 
+
+[PREREQUISITE]
+   pls ensure first: ssh -vv -ND 8080 -l [loginName] [midmanServer]
+_EOF
+
+    logo
 }
 
 # proxycommand use by ssh command.
@@ -31,12 +56,13 @@ cat << EOF > $1
 # Should be placed at ~/.ssh/config, make it if not exist. 
 # or you should edit line at /etc/ssh/ssh_config
 # 49 #   ProxyCommand ssh -q -W %h:%p gateway.example.com
-Host *
+Host github.com
+    Hostname github.com
     ProxyCommand netcat -x 127.0.0.1:8080 %h %p
 EOF
 }
 
-disable() {
+uninstall() {
     if [ -f $cfgFilePath ]; then
         echo "Found $cfgFile file, Moving $cfgFile to ${cfgFile}.bak"
         cd ~/.ssh
@@ -49,7 +75,7 @@ disable() {
     fi
 }
 
-enable() {
+install() {
     if [ -f ${cfgFilePath} ]; then
         echo "Found $cfgFile file, backup $cfgFile to ${cfgFile}.bak"
         cd ~/.ssh
@@ -69,12 +95,12 @@ enable() {
 }
 
 case $1 in
-    'enable')
-        enable
+    'install')
+        install
     ;;
 
-    'disable')
-        disable
+    'uninstall')
+        uninstall
     ;;
 esac;
 
