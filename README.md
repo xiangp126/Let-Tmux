@@ -269,8 +269,6 @@ export PKG_CONFIG_PATH=/home/pi/.usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 ```
 
-```
-
 # Reference
 
 [pkg-config-guide](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
