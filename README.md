@@ -1,15 +1,8 @@
-# File List
+# Installation Guide
+it will automatic install tmux without root privilege
 
-* GIT_PROXY_ISSUE.md: solution of key ssh over ssh communication issue.
-* Compiliation guide: guide for compile tmux (written in this Readme.md).
-* sshproxy.sh: a small script used to setup http & https socks5 proxy useful for 'git clone'.
-* httproxy.sh: a small script used to setup ssh config used for 'git push'.
-* _config: sample ssh config file - proxycommand.
-* _.tmux.conf: tmux config files with good behaviour.
-* ncurses.pc: self-made .pc file for compile tmux(using ncurses packages).
-* pk_config.log: sh -x ./configure --prefix=XX for compiling tmux.
+verified on Ubuntu | CentOS
 
-# Quick Start
 ``` bash
 $ sh oneKey.sh
 
@@ -26,9 +19,15 @@ $ sh oneKey.sh
   |_| |_|  |_|\___//_/\_\
 
 $ sh oneKey.sh install
-# verified on MAC OS/Ubuntu/CentOS
 
 ```
+
+# Feature List
+V2.0
+* skip system already installed packages
+* skip already downloaded packages
+* dynamic generacted dynamic.env
+
 # Guide
 ## compile libevent (optional)
 tmux needs libevent 2.x support
