@@ -74,7 +74,8 @@ _EOF
 
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
-            echo [Error]: wget returns error, quiting now ...            exit
+            echo [Error]: wget returns error, quiting now ...
+            exit
         fi
     fi
 
