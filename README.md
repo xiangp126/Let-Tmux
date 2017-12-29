@@ -1,5 +1,5 @@
 # Installation Guide
-it will automatic install tmux without root privilege
+it will automatic install tmux with or without root privilege
 
 verified on Ubuntu | CentOS
 
@@ -7,10 +7,14 @@ verified on Ubuntu | CentOS
 $ sh oneKey.sh
 
 [NAME]
-        oneKey.sh -- setup Tmux through one script
+    oneKey.sh -- setup Tmux through one script
 
 [USAGE]
-        oneKey.sh [install | help]
+    oneKey.sh [home | root | help]
+
+[DESCRIPTION]
+    home -- install to /home/corsair/.usr/
+    root -- install to /usr/local/
 
  _____ __  __ _   ___  __
 |_   _|  \/  | | | \ \/ /
