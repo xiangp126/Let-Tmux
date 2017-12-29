@@ -6,14 +6,15 @@ startDir=`pwd`
 # main work directory, usually ~/myGit
 mainWd=$startDir
 
-# common install directory
-commInstdir=~/.usr
+# common install dir for home | root mode
+homeInstDir=~/.usr
+rootInstDir=/usr/local
+# default is home mode
+commInstdir=$homeInstDir
 libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
 dynamicEnvName=dynamic.env
-# make installation directory
-mkdir -p $commInstdir
 
 logo() {
     cat << "_EOF"
@@ -27,13 +28,17 @@ _EOF
 }
 
 usage() {
-	exeName=${0##*/}
+    exeName=${0##*/}
     cat << _EOF
 [NAME]
-	$exeName -- setup Tmux through one script
+    $exeName -- setup Tmux through one script
 
 [USAGE]
-	$exeName [install | help]
+    $exeName [home | root | help]
+
+[DESCRIPTION]
+    home -- install to $homeInstDir/
+    root -- install to $rootInstDir/
 
 _EOF
 	logo
@@ -220,7 +225,21 @@ _EOF
     makeDynEnv
     # source dynamic.env first
     source ${startDir}/$dynamicEnvName
+
+    execPrefix=""
+    case $1 in
+        'home')
+        ;;
+
+        'root')
+            commInstdir=$rootInstDir
+            execPrefix=sudo
+        ;;
+    esac
+
     tmuxInstDir=$commInstdir
+    $execPrefix mkdir -p $tmuxInstDir
+    # comm attribute for getting source tmux
     repoLink=https://github.com/tmux
     repoName=tmux
 
@@ -245,7 +264,7 @@ _EOF
     sh autogen.sh
     ./configure --prefix=$tmuxInstDir
     make -j
-    make install
+    $execPrefix make install
 
     cat << _EOF
     
@@ -262,12 +281,13 @@ install() {
     sleep 1
     installNcurses
     sleep 1
-    installTmux
+    # home | root mode
+    installTmux $1
 }
 
 case $1 in
-    'install')
-        install
+    'home' | 'root')
+        install $1
     ;;
 
     *)
