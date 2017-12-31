@@ -13,7 +13,7 @@ $ sh oneKey.sh
     oneKey.sh [home | root | help]
 
 [DESCRIPTION]
-    home -- install to /home/corsair/.usr/
+    home -- install to ~/.usr/
     root -- install to /usr/local/
 
  _____ __  __ _   ___  __

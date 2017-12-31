@@ -5,3 +5,4 @@ libevent-*
 *.tar.gz
 ncurses-*
 ncurses.pc
+dynamic.env
