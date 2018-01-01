@@ -144,8 +144,17 @@ _EOF
 
     tar -zxv -f $tarName
     cd $untarName
+    # fix issue for lib_gen.c
+    export CPPFLAGS="-P"
     ./configure --prefix=$ncursesInstDir
     make -j
+
+	# check if make returns successfully
+	if [[ $? != 0 ]]; then
+		echo [Error]: make returns error, quiting now ...
+		exit
+	fi
+
     make install
 
     # go back to start dir to make ncurses.pc
@@ -262,6 +271,13 @@ _EOF
     cd $repoName
     git checkout $checkoutVersion
     sh autogen.sh
+
+	# check if autogen returns successfully
+	if [[ $? != 0 ]]; then
+		echo [Error]: install automake first, quiting now ...
+		exit
+	fi
+
     ./configure --prefix=$tmuxInstDir
     make -j
     $execPrefix make install
