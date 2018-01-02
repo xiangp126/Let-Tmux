@@ -11,6 +11,8 @@ homeInstDir=~/.usr
 rootInstDir=/usr/local
 # default is home mode
 commInstdir=$homeInstDir
+execPrefix=""
+# libevent & ncurses
 libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
@@ -92,7 +94,14 @@ _EOF
     # end fix
     ./configure --prefix=$libeventInstDir
     make -j
-    make install
+
+	# check if make returns successfully
+	if [[ $? != 0 ]]; then
+		echo [Error]: make returns error, quiting now ...
+		exit
+	fi
+
+    $execPrefix make install
 
     cat << _EOF
     
@@ -155,7 +164,7 @@ _EOF
 		exit
 	fi
 
-    make install
+    $execPrefix make install
 
     # go back to start dir to make ncurses.pc
     cd $startDir
@@ -184,7 +193,7 @@ Cflags: -I${includedir}
 _EOF
 
     echo Copying $ncursesPcName to due path ...
-    cp $ncursesPcName ${ncursesInstDir}/lib/pkgconfig/
+    $execPrefix cp $ncursesPcName ${ncursesInstDir}/lib/pkgconfig/
 
     cat << _EOF
     
@@ -234,17 +243,6 @@ _EOF
     makeDynEnv
     # source dynamic.env first
     source ${startDir}/$dynamicEnvName
-
-    execPrefix=""
-    case $1 in
-        'home')
-        ;;
-
-        'root')
-            commInstdir=$rootInstDir
-            execPrefix=sudo
-        ;;
-    esac
 
     tmuxInstDir=$commInstdir
     $execPrefix mkdir -p $tmuxInstDir
@@ -302,7 +300,15 @@ install() {
 }
 
 case $1 in
-    'home' | 'root')
+    'home')
+        commInstdir=$homeInstDir
+        execPrefix=""
+        install $1
+    ;;
+
+    'root')
+        commInstdir=$rootInstDir
+        execPrefix=sudo
         install $1
     ;;
 
