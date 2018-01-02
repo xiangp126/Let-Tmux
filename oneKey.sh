@@ -295,21 +295,20 @@ install() {
     sleep 1
     installNcurses
     sleep 1
-    # home | root mode
-    installTmux $1
+    installTmux
 }
 
 case $1 in
     'home')
         commInstdir=$homeInstDir
         execPrefix=""
-        install $1
+        install
     ;;
 
     'root')
         commInstdir=$rootInstDir
         execPrefix=sudo
-        install $1
+        install
     ;;
 
     *)
