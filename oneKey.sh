@@ -286,6 +286,7 @@ _EOF
 INSTALLING TMUX DONE ...
 tmux -V = `$tmuxInstDir/bin/tmux -V`
 tmux path = $tmuxInstDir/bin/
+source $dynamicEnvName first
 ------------------------------------------------------
 _EOF
 }
