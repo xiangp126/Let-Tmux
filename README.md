@@ -1,6 +1,4 @@
 # Installation Guide
-it will automatic install tmux with or without root privilege
-
 verified on Ubuntu | CentOS
 
 ``` bash
