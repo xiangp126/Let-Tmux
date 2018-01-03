@@ -86,7 +86,7 @@ _EOF
         fi
     fi
 
-    tar -zxv -f libevent-2.1.8-stable.tar.gz
+    tar -zxv -f $tarName
     cd $untarName
     # fix env problem for openssl in MAC OS
     export CPPFLAGS=-I/usr/local/opt/openssl/include
