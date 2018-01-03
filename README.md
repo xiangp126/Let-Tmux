@@ -20,7 +20,7 @@ $ sh oneKey.sh
   | | | |  | | |_| |/  \
   |_| |_|  |_|\___//_/\_\
 
-$ sh oneKey.sh install
+$ sh oneKey.sh home
 
 ```
 
