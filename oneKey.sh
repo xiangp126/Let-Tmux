@@ -1,11 +1,9 @@
 #!/bin/bash
 set -x
-
-# this shell start dir, normally original path
+# where is shell executed
 startDir=`pwd`
-# main work directory, usually ~/myGit
-mainWd=$startDir
-
+# main work directory, not influenced by start dir
+mainWd=$(cd $(dirname $0); pwd)
 # common install dir for home | root mode
 homeInstDir=~/.usr
 rootInstDir=/usr/local
@@ -17,6 +15,10 @@ libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
 dynamicEnvName=dynamic.env
+# how many cpus os has, used for make -j 
+osCpus=1
+# store all downloaded packages here
+downloadPath=$mainWd/downloads
 
 logo() {
     cat << "_EOF"
@@ -36,7 +38,7 @@ usage() {
     $exeName -- setup Tmux through one script
 
 [USAGE]
-    $exeName [home | root | help]
+    sh $exeName [home | root | help]
 
 [DESCRIPTION]
     home -- install to $homeInstDir/
@@ -47,38 +49,33 @@ _EOF
 }
 
 installLibEvent() {
-    
     cat << "_EOF"
-    
 ------------------------------------------------------
 STEP 1: INSTALLING LIBEVENT ...
 ------------------------------------------------------
 _EOF
-
     # libevent libevent - libevent is an asynchronous notification event loop library
     whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'` 
     if [[ "$whereIsLibevent" != "" ]]; then
         echo [Warning]: system already has libevent installed, omitting it ...
         return
     fi
-
     libeventInstDir=$commInstdir
     wgetLink=https://github.com/libevent/libevent/releases/download/release-2.1.8-stable
     tarName=libevent-2.1.8-stable.tar.gz
     untarName=libevent-2.1.8-stable
 
     # rename download package
-    cd $startDir
+    cd $downloadPath
     # check if already has this tar ball.
     if [[ -f $tarName ]]; then
         echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
     else
         wget --no-cookies \
-            --no-check-certificate \
-            --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-            "${wgetLink}/${tarName}" \
-            -O $tarName
-
+             --no-check-certificate \
+             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+             "${wgetLink}/${tarName}" \
+             -O $tarName
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
             echo [Error]: wget returns error, quiting now ...
@@ -86,7 +83,9 @@ _EOF
         fi
     fi
 
-    tar -zxv -f $tarName
+    if [[ ! -d $untarName ]]; then
+        tar -zxv -f $tarName
+    fi
     cd $untarName
     # fix env problem for openssl in MAC OS
     export CPPFLAGS=-I/usr/local/opt/openssl/include
@@ -100,11 +99,9 @@ _EOF
 		echo [Error]: make returns error, quiting now ...
 		exit
 	fi
-
     $execPrefix make install
 
     cat << _EOF
-    
 ------------------------------------------------------
 INSTALLING LIBEVENT DONE ...
 libevent path = $libeventInstDir/bin/
@@ -113,13 +110,10 @@ _EOF
 }
 
 installNcurses() {
-    
     cat << "_EOF"
-    
 ------------------------------------------------------
 STEP 2: INSTALLING NCURSES ...
 ------------------------------------------------------
-
 _EOF
     # ncurses: libncurses is a new free software emulation of curses. 
     whereIsNcurses=`pkg-config --list-all | grep -i '^ncurses\b'` 
@@ -134,40 +128,40 @@ _EOF
     untarName=ncurses-5.9
 
     # rename download package
-    cd $startDir
+    cd $downloadPath
     # check if already has this tar ball.
     if [[ -f $tarName ]]; then
         echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
     else
         wget --no-cookies \
-        --no-check-certificate \
-        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-        "${wgetLink}/${tarName}" \
-        -O $tarName
-
+             --no-check-certificate \
+             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+             "${wgetLink}/${tarName}" \
+             -O $tarName
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
-            echo [Error]: wget returns error, quiting now ...            exit
+            echo [Error]: wget returns error, quiting now ...
+            exit
         fi
     fi
 
-    tar -zxv -f $tarName
+    if [[ ! -d $untarName ]]; then
+        tar -zxv -f $tarName
+    fi
     cd $untarName
     # fix issue for lib_gen.c
     export CPPFLAGS="-P"
     ./configure --prefix=$ncursesInstDir
     make -j
-
 	# check if make returns successfully
 	if [[ $? != 0 ]]; then
 		echo [Error]: make returns error, quiting now ...
 		exit
 	fi
-
     $execPrefix make install
 
-    # go back to start dir to make ncurses.pc
-    cd $startDir
+    # go back to mainW to make ncurses.pc
+    cd $mainWd
     ncursesPcName=ncurses.pc
     echo Making $ncursesPcName to due path ...
 
@@ -191,12 +185,9 @@ Libs: -L${libdir} -lncurses
 # Libs.private: -lncurses
 Cflags: -I${includedir}
 _EOF
-
     echo Copying $ncursesPcName to due path ...
     $execPrefix cp $ncursesPcName ${ncursesInstDir}/lib/pkgconfig/
-
     cat << _EOF
-    
 ------------------------------------------------------
 INSTALLING LIBEVENT DONE ...
 libevent path = $libeventInstDir/bin/
@@ -206,11 +197,9 @@ _EOF
 
 # make file, dynamic environment
 makeDynEnv() {
-    # enter into dir first
-    cd $startDir
+    #enter into mainWd
+    cd $mainWd
     envName=$dynamicEnvName
-    # delete it if exists
-    rm -rf $envName
 
     LIBEVENT_INSTALL_DIR=$commInstdir
     # parse value of $var
@@ -219,7 +208,6 @@ makeDynEnv() {
 export LIBEVENT_INSTALL_DIR=$LIBEVENT_INSTALL_DIR
 export LIBEVENT_PKG_DIR=${LIBEVENT_INSTALL_DIR}/lib/pkgconfig
 _EOF
-
     # do not parse value of $var
     cat >> $envName << "_EOF"
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LIBEVENT_INSTALL_DIR}/lib
@@ -232,9 +220,7 @@ _EOF
 }
 
 installTmux() {
-    
     cat << "_EOF"
-    
 ------------------------------------------------------
 STEP 3: INSTALLING TMUX ...
 ------------------------------------------------------
@@ -242,7 +228,7 @@ _EOF
     # make dynamic env before source it.
     makeDynEnv
     # source dynamic.env first
-    source ${startDir}/$dynamicEnvName
+    source $mainWd/$dynamicEnvName
 
     tmuxInstDir=$commInstdir
     $execPrefix mkdir -p $tmuxInstDir
@@ -250,13 +236,12 @@ _EOF
     repoLink=https://github.com/tmux
     repoName=tmux
 
-    cd $startDir
+    cd $downloadPath
     # check if already has this tar ball.
     if [[ -d $repoName ]]; then
         echo [Warning]: Github repository $repoName already exists, Omitting clone ...
     else
         git clone $repoLink/$repoName
-
         # check if wget returns successfully
         if [[ $? != 0 ]]; then
             echo [Error]: git clone returns error, quiting now ...
@@ -275,27 +260,29 @@ _EOF
 		echo [Error]: install automake first, quiting now ...
 		exit
 	fi
-
     ./configure --prefix=$tmuxInstDir
     make -j
+
+    if [[ $? != 0 ]]; then
+        echo [Error]: make returns error, quiting now ...
+        exit
+    fi
     $execPrefix make install
 
     cat << _EOF
-    
 ------------------------------------------------------
 INSTALLING TMUX DONE ...
 tmux -V = `$tmuxInstDir/bin/tmux -V`
 tmux path = $tmuxInstDir/bin/
-source $dynamicEnvName first
+source $dynamicEnvName if needed
 ------------------------------------------------------
 _EOF
 }
 
 install() {
+    mkdir -p $downloadPath
     installLibEvent
-    sleep 1
     installNcurses
-    sleep 1
     installTmux
 }
 
