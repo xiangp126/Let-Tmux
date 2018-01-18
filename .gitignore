@@ -1,8 +1,6 @@
 *.swp
 *.swo
-tmux
-libevent-*
 *.tar.gz
-ncurses-*
 ncurses.pc
 dynamic.env
+downloads/
