@@ -1,5 +1,9 @@
 # Installation Guide
-verified on Ubuntu | CentOS
+Goal to deploy Tmux latest version through onekey stroke under Unix link platform
+
+Automatically generating dynamic env txt, no need extra PATH set
+
+Verified on Ubuntu | CentOS 6 & 7 | MAC OS
 
 ``` bash
 $ sh oneKey.sh

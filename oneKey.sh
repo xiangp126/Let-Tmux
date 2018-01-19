@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 # where is shell executed
 startDir=`pwd`
 # main work directory, not influenced by start dir
@@ -51,7 +50,7 @@ _EOF
 installLibEvent() {
     cat << "_EOF"
 ------------------------------------------------------
-STEP 1: INSTALLING LIBEVENT ...
+INSTALLING LIBEVENT ...
 ------------------------------------------------------
 _EOF
     # libevent libevent - libevent is an asynchronous notification event loop library
@@ -112,7 +111,7 @@ _EOF
 installNcurses() {
     cat << "_EOF"
 ------------------------------------------------------
-STEP 2: INSTALLING NCURSES ...
+INSTALLING NCURSES ...
 ------------------------------------------------------
 _EOF
     # ncurses: libncurses is a new free software emulation of curses. 
@@ -159,11 +158,14 @@ _EOF
 		exit
 	fi
     $execPrefix make install
-
-    # go back to mainW to make ncurses.pc
+    cat << "_EOF"
+------------------------------------------------------
+GENERATING NCURSES.PC FOR PKG-CONFIG ...
+------------------------------------------------------
+_EOF
+    # go back to mainWd to make ncurses.pc
     cd $mainWd
     ncursesPcName=ncurses.pc
-    echo Making $ncursesPcName to due path ...
 
     cat > $ncursesPcName << _EOF
 # ncurses pkg-config source file
@@ -185,7 +187,6 @@ Libs: -L${libdir} -lncurses
 # Libs.private: -lncurses
 Cflags: -I${includedir}
 _EOF
-    echo Copying $ncursesPcName to due path ...
     $execPrefix cp $ncursesPcName ${ncursesInstDir}/lib/pkgconfig/
     cat << _EOF
 ------------------------------------------------------
@@ -197,10 +198,14 @@ _EOF
 
 # make file, dynamic environment
 makeDynEnv() {
+    cat << "_EOF"
+------------------------------------------------------
+GENERATING DYNAMIC ENV TXT ...
+------------------------------------------------------
+_EOF
     #enter into mainWd
     cd $mainWd
     envName=$dynamicEnvName
-
     LIBEVENT_INSTALL_DIR=$commInstdir
     # parse value of $var
     cat > $envName << _EOF
@@ -213,7 +218,6 @@ _EOF
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LIBEVENT_INSTALL_DIR}/lib
 export PKG_CONFIG_PATH=${LIBEVENT_PKG_DIR}:$PKG_CONFIG_PATH
 _EOF
-
     chmod +x $envName
     cd - &> /dev/null
     # as return value of this func
@@ -222,7 +226,7 @@ _EOF
 installTmux() {
     cat << "_EOF"
 ------------------------------------------------------
-STEP 3: INSTALLING TMUX ...
+INSTALLING TMUX ...
 ------------------------------------------------------
 _EOF
     # make dynamic env before source it.
@@ -274,7 +278,7 @@ _EOF
 INSTALLING TMUX DONE ...
 tmux -V = `$tmuxInstDir/bin/tmux -V`
 tmux path = $tmuxInstDir/bin/
-source $dynamicEnvName if needed
+dynamic env txt = $dynamicEnvName
 ------------------------------------------------------
 _EOF
 }
@@ -288,12 +292,14 @@ install() {
 
 case $1 in
     'home')
+        set -x
         commInstdir=$homeInstDir
         execPrefix=""
         install
     ;;
 
     'root')
+        set -x
         commInstdir=$rootInstDir
         execPrefix=sudo
         install
