@@ -1,5 +1,5 @@
 # Installation Guide
-Goal to deploy Tmux latest version through onekey stroke under Unix link platform
+Goal to deploy TMUX latest version under Linux like platform through onekey stroke 
 
 Automatically generating dynamic env txt, no need extra PATH set
 
