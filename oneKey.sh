@@ -14,7 +14,7 @@ libeventInstDir=$commInstdir
 ncursesInstDir=$commInstdir
 # dynamic env global name
 dynamicEnvName=dynamic.env
-# how many cpus os has, used for make -j 
+# how many cpus os has, used for make -j
 osCpus=1
 # store all downloaded packages here
 downloadPath=$mainWd/downloads
@@ -44,7 +44,7 @@ usage() {
     root -- install to $rootInstDir/
 
 _EOF
-	logo
+    logo
 }
 
 installLibEvent() {
@@ -54,7 +54,7 @@ INSTALLING LIBEVENT ...
 ------------------------------------------------------
 _EOF
     # libevent libevent - libevent is an asynchronous notification event loop library
-    whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'` 
+    whereIsLibevent=`pkg-config --list-all | grep -i '^libevent\b'`
     if [[ "$whereIsLibevent" != "" ]]; then
         echo [Warning]: system already has libevent installed, omitting it ...
         return
@@ -93,11 +93,11 @@ _EOF
     ./configure --prefix=$libeventInstDir
     make -j
 
-	# check if make returns successfully
-	if [[ $? != 0 ]]; then
-		echo [Error]: make returns error, quiting now ...
-		exit
-	fi
+    # check if make returns successfully
+    if [[ $? != 0 ]]; then
+        echo [Error]: make returns error, quiting now ...
+        exit
+    fi
     $execPrefix make install
 
     cat << _EOF
@@ -114,8 +114,8 @@ installNcurses() {
 INSTALLING NCURSES ...
 ------------------------------------------------------
 _EOF
-    # ncurses: libncurses is a new free software emulation of curses. 
-    whereIsNcurses=`pkg-config --list-all | grep -i '^ncurses\b'` 
+    # ncurses: libncurses is a new free software emulation of curses.
+    whereIsNcurses=`pkg-config --list-all | grep -i '^ncurses\b'`
     if [[ "$whereIsNcurses" != "" ]]; then
         echo [Warning]: system already has ncurses installed, omitting it ...
         return
@@ -152,11 +152,11 @@ _EOF
     export CPPFLAGS="-P"
     ./configure --prefix=$ncursesInstDir
     make -j
-	# check if make returns successfully
-	if [[ $? != 0 ]]; then
-		echo [Error]: make returns error, quiting now ...
-		exit
-	fi
+    # check if make returns successfully
+    if [[ $? != 0 ]]; then
+        echo [Error]: make returns error, quiting now ...
+        exit
+    fi
     $execPrefix make install
     cat << "_EOF"
 ------------------------------------------------------
@@ -179,7 +179,7 @@ libdir=${exec_prefix}/lib
 includedir=${prefix}/include/ncurses
 
 Name: ncurses
-Description: ncurses(libncurses) is new emulation of curses. 
+Description: ncurses(libncurses) is new emulation of curses.
 Version: 5.9-stable
 Requires:
 Conflicts:
@@ -259,11 +259,11 @@ _EOF
     git checkout $checkoutVersion
     sh autogen.sh
 
-	# check if autogen returns successfully
-	if [[ $? != 0 ]]; then
-		echo [Error]: install automake first, quiting now ...
-		exit
-	fi
+    # check if autogen returns successfully
+    if [[ $? != 0 ]]; then
+        echo [Error]: install automake first, quiting now ...
+        exit
+    fi
     ./configure --prefix=$tmuxInstDir
     make -j
 
@@ -296,17 +296,17 @@ case $1 in
         commInstdir=$homeInstDir
         execPrefix=""
         install
-    ;;
+        ;;
 
     'root')
         set -x
         commInstdir=$rootInstDir
         execPrefix=sudo
         install
-    ;;
+        ;;
 
     *)
         set +x
         usage
-    ;;
+        ;;
 esac
