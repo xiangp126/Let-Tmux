@@ -42,7 +42,6 @@ usage() {
 [DESCRIPTION]
     home -- install to $homeInstDir/
     root -- install to $rootInstDir/
-
 _EOF
     logo
 }

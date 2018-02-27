@@ -1,9 +1,9 @@
 # Installation Guide
-Goal to deploy TMUX latest version under Linux like platform through onekey stroke 
+- Goal to deploy tmux latest version under Linux like platform through 'onekey' stroke
 
-Automatically generating dynamic env txt, no need extra PATH set
+- Automatically generating dynamic env txt, no need extra PATH set
 
-Verified on Ubuntu | CentOS 6 & 7 | MAC OS
+- Verified on Ubuntu | CentOS 6 & 7 | MAC OS
 
 ``` bash
 $ sh oneKey.sh
@@ -17,7 +17,6 @@ $ sh oneKey.sh
 [DESCRIPTION]
     home -- install to ~/.usr/
     root -- install to /usr/local/
-
  _____ __  __ _   ___  __
 |_   _|  \/  | | | \ \/ /
   | | | |\/| | | | |\  /
@@ -55,7 +54,7 @@ tmux dependes on ncurses.
 
 missing probility: %
 
-There is little chance missing ncurses for the platform, 
+There is little chance missing ncurses for the platform,
 though self-compile it is a little complex.
 ```bash
 ----------------------------------------------------
@@ -68,7 +67,7 @@ libncurses5-dev - developer's libraries for ncurses
 > ./configure --prefix=/home/pi/.usr/
 # you'd better just use 'make', not 'make -j' for the first time you compile.
 # Or it'll end up with err: undefined reference to `leaveok'
-> make 
+> make
 > make install
 ```
 
