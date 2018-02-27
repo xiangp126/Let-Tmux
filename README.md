@@ -22,9 +22,9 @@ $ sh oneKey.sh
   | | | |\/| | | | |\  /
   | | | |  | | |_| |/  \
   |_| |_|  |_|\___//_/\_\
-
+```
+``` bash
 $ sh oneKey.sh home
-
 ```
 
 # Feature List
