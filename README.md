@@ -1,9 +1,11 @@
 # Installation Guide
-- Goal to deploy tmux latest version under Linux like platform through 'onekey' stroke
+- Goal to deploy tmux latest version by 'onekey' stroke
 
 - Automatically generating dynamic env txt, no need extra PATH set
 
-- Verified on Ubuntu | CentOS 6 & 7 | MAC OS
+- Crossing Linux platforms, verified on
+    - Ubuntu | CentOS 6 & 7
+    - brew install tmux preferred on Mac
 
 ``` bash
 $ sh oneKey.sh
