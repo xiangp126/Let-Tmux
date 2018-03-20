@@ -1,10 +1,13 @@
-- Thanks for the development of such wonderful tools - Tmux
+- This project aims to deploy tmux latest on Linux by 'onekey' stroke
 
-- This project aims to deploy tmux latest released version by 'onekey' stroke
+- Automatically generating dynamic env txt, need not set extra PATH
 
-- Automatically generating dynamic env txt, no need extra PATH set
+- Has checked on Ubuntu | CentOS 6 & 7, brew install preferred on Mac
 
-- Verified on Ubuntu | CentOS 6 & 7, brew install preferred on Mac
+- May install if needed
+    - libevent
+    - ncurses
+    - tmux
 
 # Quick Start
 ``` bash
@@ -279,8 +282,8 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 
 # Reference
 
-[pkg-config-guide](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
+[PKG-CONFIG-GUIDE](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
 
-[PKG_CONFIG_PATH detail explanation](http://blog.csdn.net/newchenxf/article/details/51750239)
+[PKG_CONFIG_PATH DETAIL EXPLANATION](http://blog.csdn.net/newchenxf/article/details/51750239)
 
-[LD_LIBRARY_PATH refer](http://blog.csdn.net/wangeen/article/details/8159500)
+[LD_LIBRARY_PATH REFER](http://blog.csdn.net/wangeen/article/details/8159500)
