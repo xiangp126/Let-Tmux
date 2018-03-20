@@ -1,12 +1,12 @@
-# Installation Guide
-- Goal to deploy tmux latest version by 'onekey' stroke
+- Thanks for the development of such wonderful tools - Tmux
+
+- This project aims to deploy tmux latest released version by 'onekey' stroke
 
 - Automatically generating dynamic env txt, no need extra PATH set
 
-- Crossing Linux platforms, verified on
-    - Ubuntu | CentOS 6 & 7
-    - brew install tmux preferred on Mac
+- Verified on Ubuntu | CentOS 6 & 7, brew install preferred on Mac
 
+# Quick Start
 ``` bash
 $ sh oneKey.sh
 
@@ -29,13 +29,14 @@ $ sh oneKey.sh
 $ sh oneKey.sh home
 ```
 
-# Feature List
+# Modification List
 V2.0
+* auto checkout to the latest released tag
 * skip system already installed packages
 * skip already downloaded packages
 * dynamic generacted dynamic.env
 
-# Guide
+# Detailed Guide
 ## compile libevent (optional)
 tmux needs libevent 2.x support
 
@@ -283,4 +284,3 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 [PKG_CONFIG_PATH detail explanation](http://blog.csdn.net/newchenxf/article/details/51750239)
 
 [LD_LIBRARY_PATH refer](http://blog.csdn.net/wangeen/article/details/8159500)
-

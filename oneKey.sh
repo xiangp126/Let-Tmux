@@ -123,7 +123,7 @@ _EOF
     ncursesInstDir=$commInstdir
     wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
-    untarName=ncurses-5.9
+    untarName=ncurses-latest
 
     # rename download package
     cd $downloadPath
@@ -144,7 +144,8 @@ _EOF
     fi
 
     if [[ ! -d $untarName ]]; then
-        tar -zxv -f $tarName
+        mkdir -p $untarName
+        tar -zxv -f $tarName --strip-components=1 -C $untarName
     fi
     cd $untarName
     # fix issue for lib_gen.c
@@ -252,12 +253,16 @@ _EOF
         fi
     fi
 
-    # master -> v2.6
-    checkoutVersion=2.6
     cd $repoName
-    git checkout $checkoutVersion
-    sh autogen.sh
+    # checkout to latest released tag
+    git pull
+    latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+    if [[ "$latestTag" != "" ]]; then
+        git checkout $latestTag
+    fi
 
+    # begin to build
+    sh autogen.sh
     # check if autogen returns successfully
     if [[ $? != 0 ]]; then
         echo [Error]: install automake first, quiting now ...
