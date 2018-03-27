@@ -1,13 +1,17 @@
-- This project aims to deploy tmux latest on Linux by 'onekey' stroke
+- This project aims to deploy tmux latest on Linux server by 'onekey' stroke
+    - automatically generating dynamic env txt, need not set extra PATH
+    - [crosslv](https://github.com/xiangp126/crosslv) may call this repo to install tmux if needed
+- Incremental install supported, safe to run consecutive times
+- Two modes deploy selection
+    - home mode: without root privilege, normally install packages into $HOME/.usr
+    - root mode: with root privilege, normally install packages into /usr/local
+- Has checked on Ubuntu | CentOS, brew install preferred on Mac
+- May install
+    - libevent v(2.1.8)
+    - ncurses latest
+    - tmux latest
 
-- Automatically generating dynamic env txt, need not set extra PATH
-
-- Has checked on Ubuntu | CentOS 6 & 7, brew install preferred on Mac
-
-- May install if needed
-    - libevent
-    - ncurses
-    - tmux
+Current released version: 2.6
 
 # Quick Start
 ``` bash
