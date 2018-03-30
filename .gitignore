@@ -1,6 +1,5 @@
 *.swp
 *.swo
-*.tar.gz
 ncurses.pc
 dynamic.env
 downloads/

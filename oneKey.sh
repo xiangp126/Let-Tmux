@@ -18,6 +18,8 @@ dynamicEnvName=dynamic.env
 osCpus=1
 # store all downloaded packages here
 downloadPath=$mainWd/downloads
+# store packages that was slow to download
+pkgPath=$mainWd/packages
 
 logo() {
     cat << "_EOF"
@@ -125,31 +127,30 @@ _EOF
     fi
 
     ncursesInstDir=$commInstdir
-    wgetLink=ftp://ftp.invisible-island.net/ncurses
+    # wgetLink=ftp://ftp.invisible-island.net/ncurses
     tarName=ncurses.tar.gz
     untarName=ncurses-latest
 
-    # rename download package
     cd $downloadPath
     # check if already has this tar ball.
-    if [[ -f $tarName ]]; then
-        echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
-    else
-        wget --no-cookies \
-             --no-check-certificate \
-             --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-             "${wgetLink}/${tarName}" \
-             -O $tarName
-        # check if wget returns successfully
-        if [[ $? != 0 ]]; then
-            echo [Error]: wget returns error, quiting now ...
-            exit
-        fi
-    fi
+    # if [[ -f $tarName ]]; then
+    #     echo [Warning]: Tar Ball $tarName already exists, Omitting wget ...
+    # else
+    #     wget --no-cookies \
+    #          --no-check-certificate \
+    #          --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+    #          "${wgetLink}/${tarName}" \
+    #          -O $tarName
+    #     # check if wget returns successfully
+    #     if [[ $? != 0 ]]; then
+    #         echo [Error]: wget returns error, quiting now ...
+    #         exit
+    #     fi
+    # fi
 
     if [[ ! -d $untarName ]]; then
         mkdir -p $untarName
-        tar -zxv -f $tarName --strip-components=1 -C $untarName
+        tar -zxv -f $pkgPath/$tarName --strip-components=1 -C $untarName
     fi
     cd $untarName
     # fix issue for lib_gen.c
