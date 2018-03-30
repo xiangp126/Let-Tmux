@@ -155,7 +155,7 @@ _EOF
     cd $untarName
     # fix issue for lib_gen.c
     export CPPFLAGS="-P"
-    ./configure --prefix=$ncursesInstDir
+    ./configure --prefix=$ncursesInstDir --with-shared
     make -j
     # check if make returns successfully
     if [[ $? != 0 ]]; then
