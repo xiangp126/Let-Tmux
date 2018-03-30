@@ -266,6 +266,11 @@ _EOF
         git checkout $latestTag
     fi
 
+    # fix issue
+    # tmux -V for tag 2.7 shows master, which not compatible with tmux-resurrect
+    # so go back to version 2.6
+    git checkout 2.6
+
     # begin to build
     sh autogen.sh
     # check if autogen returns successfully
