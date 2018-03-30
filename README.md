@@ -1,4 +1,4 @@
-- This project aims to deploy tmux latest on Linux server by 'onekey' stroke
+- This project aims to deploy tmux from source on Linux server by just one command
     - automatically generating dynamic env txt, need not set extra PATH
     - [crosslv](https://github.com/xiangp126/crosslv) may call this repo to install tmux if needed
 - Incremental install supported, safe to run consecutive times
@@ -16,16 +16,19 @@ Current released version: 2.6
 # Quick Start
 ``` bash
 $ sh oneKey.sh
+NAME]
+    oneKey.sh -- setup tmux through one script from source
 
-[NAME]
-    oneKey.sh -- setup Tmux through one script
+[SYNOPSIS]
+    sh oneKey.sh [home | root | help]
 
-[USAGE]
-    oneKey.sh [home | root | help]
+[EXAMPLE]
+    sh oneKey.sh
+    sh oneKey.sh home
 
 [DESCRIPTION]
-    home -- install to ~/.usr/
-    root -- install to /usr/local/
+    home -- install packages into ~/.usr/
+    root -- install packages into /usr/local/
  _      _
 | | ___| |_ _ __ ___  _   ___  __
 | |/ _ \ __| '_ ` _ \| | | \ \/ /
@@ -286,9 +289,6 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 ```
 
 # Reference
-
-[PKG-CONFIG-GUIDE](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
-
-[PKG_CONFIG_PATH DETAIL EXPLANATION](http://blog.csdn.net/newchenxf/article/details/51750239)
-
-[LD_LIBRARY_PATH REFER](http://blog.csdn.net/wangeen/article/details/8159500)
+- [PKG-CONFIG-GUIDE](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
+- [PKG_CONFIG_PATH DETAIL EXPLANATION](http://blog.csdn.net/newchenxf/article/details/51750239)
+- [LD_LIBRARY_PATH REFER](http://blog.csdn.net/wangeen/article/details/8159500)

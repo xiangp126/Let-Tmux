@@ -34,14 +34,18 @@ usage() {
     exeName=${0##*/}
     cat << _EOF
 [NAME]
-    $exeName -- setup Tmux through one script
+    $exeName -- setup tmux through one script from source
 
-[USAGE]
+[SYNOPSIS]
     sh $exeName [home | root | help]
 
+[EXAMPLE]
+    sh $exeName
+    sh $exeName home
+
 [DESCRIPTION]
-    home -- install to $homeInstDir/
-    root -- install to $rootInstDir/
+    home -- install packages into $homeInstDir/
+    root -- install packages into $rootInstDir/
 _EOF
     logo
 }
