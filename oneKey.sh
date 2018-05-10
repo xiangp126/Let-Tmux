@@ -297,10 +297,34 @@ dynamic env txt = $dynamicEnvName
 _EOF
 }
 
+installTPM() {
+    cat << "_EOF"
+------------------------------------------------------
+INSTALLING MANAGER FOR TMUX PLUGINS
+------------------------------------------------------
+_EOF
+    gitClonePath=https://github.com/tmux-plugins/tpm
+    clonedName=$HOME/.tmux/plugins/tpm
+    # check if target directory already exists
+    if [[ -d $clonedName ]]; then
+        echo [Warning]: target $clonedName already exists
+    else
+        git clone $gitClonePath $clonedName
+        # check if git returns successfully
+        if [[ $? != 0 ]]; then
+            echo "[Error]: git returns error, quitting now "
+            exit
+        fi
+    fi
+}
+
 install() {
     mkdir -p $downloadPath
     installLibEvent
     installNcurses
+    if [[ "$execPrefix" != "sudo" ]]; then
+        installTPM
+    fi
     installTmux
 }
 
