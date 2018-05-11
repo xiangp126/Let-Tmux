@@ -328,6 +328,40 @@ install() {
     installTmux
 }
 
+fixDepends() {
+    arch=$(uname -s)
+    case $arch in
+        Darwin)
+            # echo "Platform is MacOS"
+            platOsType=macos
+            ;;
+        Linux)
+            linuxType=`sed -n '1p' /etc/issue | tr -s " " | cut -d " " -f 1`
+            if [[ "$linuxType" == "Ubuntu" ]]; then
+                # echo "Platform is Ubuntu"
+                platOsType=ubuntu
+                sudo apt-get install libevent-dev libncurses5 libncurses5-dev \
+                    libncursesw5 libncursesw5-dev -y
+            elif [[ "$linuxType" == "CentOS" || "$linuxType" == "\S" || "$linuxType" == "Red" ]]; then
+                # echo "Platform is CentOS" \S => CentOS 7
+                platOsType=centos
+                sudo yum install libevent-devel ncurses* -y
+            else
+                echo "Sorry, We did not support your platform, pls check it first"
+                exit
+            fi
+            ;;
+        *)
+            cat << "_EOF"
+------------------------------------------------------
+WE ONLY SUPPORT LINUX AND MACOS SO FAR
+------------------------------------------------------
+_EOF
+            exit
+            ;;
+    esac
+}
+
 case $1 in
     'home')
         set -x
@@ -338,6 +372,7 @@ case $1 in
 
     'root')
         set -x
+        fixDepends
         commInstdir=$rootInstDir
         execPrefix=sudo
         install
