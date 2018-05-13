@@ -1,6 +1,6 @@
 - This project aims to deploy tmux from source on Linux server by just one command
     - automatically generating dynamic env txt, need not set extra PATH
-    - [crosslv](https://github.com/xiangp126/crosslv) may call this repo to install tmux if needed
+    - [Giggle](https://github.com/xiangp126/Giggle) may call this repo to install tmux if needed
 - Incremental install supported, safe to run consecutive times
 - Two modes deploy selection
     - home mode: without root privilege, normally install packages into $HOME/.usr
