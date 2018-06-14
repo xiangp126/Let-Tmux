@@ -288,7 +288,5 @@ export PKG_CONFIG_PATH=/home/pi/.usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/pi/.usr/lib
 ```
 
-# Reference
-- [PKG-CONFIG-GUIDE](https://people.freedesktop.org/~dbn/pkg-config-guide.html)
-- [PKG_CONFIG_PATH DETAIL EXPLANATION](http://blog.csdn.net/newchenxf/article/details/51750239)
-- [LD_LIBRARY_PATH REFER](http://blog.csdn.net/wangeen/article/details/8159500)
+## License
+The [MIT](./LICENSE.txt) License (MIT)
