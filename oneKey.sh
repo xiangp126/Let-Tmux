@@ -269,7 +269,7 @@ _EOF
     # fix issue
     # tmux -V for tag 2.7 shows master, which not compatible with tmux-resurrect
     # so go back to version 2.6. Seems beed fixed after 2018/05/03
-    # git checkout 2.6
+    git checkout 2.6
 
     # begin to build
     sh autogen.sh
