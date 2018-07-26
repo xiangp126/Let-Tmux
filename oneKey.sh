@@ -316,13 +316,18 @@ _EOF
             exit
         fi
     fi
+    tmuxInstallScript=$HOME/.tmux/plugins/tpm/bin/install_plugins
+    if [[ -f $tmuxInstallScript ]]; then
+        sh -x $tmuxInstallScript
+    fi
 }
 
 install() {
     mkdir -p $downloadPath
     installLibEvent
     installNcurses
-    if [[ "$execPrefix" != "sudo" ]]; then
+    # install tmux plugin manager anyhow
+    if [[ 1 == 1 || "$execPrefix" != "sudo" ]]; then
         installTPM
     fi
     installTmux
