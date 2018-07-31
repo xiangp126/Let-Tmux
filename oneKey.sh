@@ -286,6 +286,10 @@ _EOF
         exit
     fi
     $execPrefix make install
+    if [[ $? != 0 ]]; then
+        echo [Error]: make install returns error, quiting now ...
+        exit
+    fi
 
     cat << _EOF
 ------------------------------------------------------
@@ -303,6 +307,16 @@ installTPM() {
 INSTALLING MANAGER FOR TMUX PLUGINS
 ------------------------------------------------------
 _EOF
+    tmuxConfPath=$HOME/.tmux.conf
+    tmuxConfTempPath=./template/tmux.conf
+    if [[ ! -f "$tmuxConfPath" ]]; then
+        cp $tmuxConfTempPath $tmuxConfPath
+        if [[ $? != 0 ]]; then
+            echo [Error]: cp tmux config error, quiting now ...
+            exit
+        fi
+    fi
+
     gitClonePath=https://github.com/tmux-plugins/tpm
     clonedName=$HOME/.tmux/plugins/tpm
     # check if target directory already exists
