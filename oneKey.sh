@@ -229,16 +229,16 @@ _EOF
 }
 
 installTmux() {
-    cat << "_EOF"
-------------------------------------------------------
-INSTALLING TMUX ...
-------------------------------------------------------
-_EOF
     # make dynamic env before source it.
     makeDynEnv
     # source dynamic.env first
     source $mainWd/$dynamicEnvName
 
+    cat << "_EOF"
+------------------------------------------------------
+INSTALLING TMUX ...
+------------------------------------------------------
+_EOF
     tmuxInstDir=$commInstdir
     $execPrefix mkdir -p $tmuxInstDir
     # comm attribute for getting source tmux
@@ -326,11 +326,11 @@ install() {
     mkdir -p $downloadPath
     installLibEvent
     installNcurses
-    # install tmux plugin manager anyhow
+    installTmux
+    # always install tmux plugin manager
     if [[ 1 == 1 || "$execPrefix" != "sudo" ]]; then
         installTPM
     fi
-    installTmux
 }
 
 fixDepends() {
@@ -350,7 +350,7 @@ fixDepends() {
             elif [[ "$linuxType" == "CentOS" || "$linuxType" == "\S" || "$linuxType" == "Red" ]]; then
                 # echo "Platform is CentOS" \S => CentOS 7
                 platOsType=centos
-                sudo yum install libevent-devel ncurses* -y
+                sudo yum install libevent-devel ncurses* --skip-broken -y
             else
                 echo "Sorry, We did not support your platform, pls check it first"
                 exit
