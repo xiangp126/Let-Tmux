@@ -307,6 +307,7 @@ installTPM() {
 INSTALLING MANAGER FOR TMUX PLUGINS
 ------------------------------------------------------
 _EOF
+    cd $mainWd
     tmuxConfPath=$HOME/.tmux.conf
     tmuxConfTempPath=./template/tmux.conf
     if [[ ! -f "$tmuxConfPath" ]]; then
