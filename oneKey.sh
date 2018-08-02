@@ -339,11 +339,11 @@ _EOF
 
 installSummary() {
     cat << _EOF
-------------------------------------------------------
+------------------------------------------------- Summary -----
 # export key variables if needed
 export PKG_CONFIG_PATH=$HOME/.usr/lib/pkgconfig:/usr/local/lib/pkgconfig
 export LD_LIBRARY_PATH=$HOME/.usr/lib:$HOME/.usr/lib64:/usr/local/lib:/usr/local/lib64
-------------------------------------------------------
+---------------------------------------------------------------
 _EOF
 }
 
