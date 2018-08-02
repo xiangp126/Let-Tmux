@@ -337,6 +337,16 @@ _EOF
     fi
 }
 
+installSummary() {
+    cat << _EOF
+------------------------------------------------------
+# export key variables if needed
+export PKG_CONFIG_PATH=$HOME/.usr/lib/pkgconfig:/usr/local/lib/pkgconfig
+export LD_LIBRARY_PATH=$HOME/.usr/lib:$HOME/.usr/lib64:/usr/local/lib:/usr/local/lib64
+------------------------------------------------------
+_EOF
+}
+
 install() {
     mkdir -p $downloadPath
     installLibEvent
@@ -346,6 +356,7 @@ install() {
     if [[ 1 == 1 || "$execPrefix" != "sudo" ]]; then
         installTPM
     fi
+    installSummary
 }
 
 fixDepends() {
