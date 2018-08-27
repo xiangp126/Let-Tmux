@@ -48,13 +48,13 @@ sh oneKey.sh
     sh oneKey.sh home
 
 [DESCRIPTION]
-    home -- install packages into ~/.usr/
+    home -- install packages into $HOME/.usr/
     root -- install packages into /usr/local/
- _      _
-| | ___| |_ _ __ ___  _   ___  __
-| |/ _ \ __| '_ ` _ \| | | \ \/ /
-| |  __/ |_| | | | | | |_| |>  <
-|_|\___|\__|_| |_| |_|\__,_/_/\_\
+                          _
+  ___ ___  _ __ ___  __ _(_)_ __
+ / __/ _ \| '__/ __|/ _` | | '__|
+| (_| (_) | |  \__ \ (_| | | |
+ \___\___/|_|  |___/\__,_|_|_|
 
 ```
 ``` bash
